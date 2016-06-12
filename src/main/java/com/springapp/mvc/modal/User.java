@@ -1,21 +1,51 @@
 package com.springapp.mvc.modal;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Created by raghuramn on 6/9/16.
  */
+@Entity
+@Table(name = "USER")
 public class User {
 
-	private Long id;
-	private String firstName;
-	private String lastName;
-	private String userName;
-	private String password;
+	@Id
+	@GeneratedValue
+	@Column(name = "id")
+	private int id;
 
-	public Long getId() {
+	@Column(name = "first_name")
+	private String firstName;
+
+	@Column(name = "last_name")
+	private String lastName;
+
+	@Column(name = "user_name")
+	private String userName;
+
+	@Column(name = "password")
+	private String password;
+	
+	public User(){
+		
+	}
+	
+	public User(String firstName, String lastName, String userName, String password){
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.userName = userName;
+		this.password= password;
+	}
+
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -23,16 +53,16 @@ public class User {
 		return firstName;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setFirstName(String first_name) {
+		this.firstName = first_name;
 	}
 
 	public String getLastName() {
 		return lastName;
 	}
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setLastName(String last_name) {
+		this.lastName = last_name;
 	}
 
 	public String getUserName() {
