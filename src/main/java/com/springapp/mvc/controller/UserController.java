@@ -26,9 +26,16 @@ public class UserController {
 	    String password = request.getParameter("password");
 	    User user = (new UserDAO()).getUserWithName(userName, password);
 	    request.getSession().setAttribute("user", user);
-		ModelAndView mv = new ModelAndView("forward:/springMVC/user/profile");
+		ModelAndView mv = new ModelAndView("forward:/user/profile");
 		return mv;
 	  }
+
+	@RequestMapping("/logOut")
+	public ModelAndView logOut(HttpServletRequest request, HttpServletResponse response) {
+		request.getSession().removeAttribute("user");
+		ModelAndView mv = new ModelAndView("forward:/");
+		return mv;
+	}
 	
 	@RequestMapping("/enrollment")
 	public ModelAndView getEnrollment(HttpServletRequest request,
@@ -50,7 +57,7 @@ public class UserController {
 		session.save(user);
 		session.getTransaction().commit();
 		request.getSession().setAttribute("user", user);
-		ModelAndView mv = new ModelAndView("forward:/springMVC/user/profile");
+		ModelAndView mv = new ModelAndView("forward:/user/profile");
 		return mv;
 	}
 	
@@ -58,6 +65,7 @@ public class UserController {
 	public ModelAndView getProfile(HttpServletRequest request,
 			HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
+		request.getSession().setAttribute("user", user);
 		ModelAndView profileView = new ModelAndView("profile");
 		return profileView;
 	}
