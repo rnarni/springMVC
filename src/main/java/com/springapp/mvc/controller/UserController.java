@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.springapp.mvc.dao.DBService;
+import com.springapp.mvc.dao.UserDAO;
 import com.springapp.mvc.modal.User;
 
 /**
@@ -21,7 +22,12 @@ public class UserController {
 	@RequestMapping("/logIn")
 	public ModelAndView getLogInPage(HttpServletRequest request, HttpServletResponse response) {
 	    ModelAndView model = new ModelAndView();
-	    return null;
+	    String userName = request.getParameter("userName");
+	    String password = request.getParameter("password");
+	    User user = (new UserDAO()).getUserWithName(userName, password);
+	    request.getSession().setAttribute("user", user);
+		ModelAndView mv = new ModelAndView("forward:/springMVC/user/profile");
+		return mv;
 	  }
 	
 	@RequestMapping("/enrollment")
@@ -34,13 +40,17 @@ public class UserController {
 	@RequestMapping("/saveMember")
 	public ModelAndView getCaptureEnrollment(HttpServletRequest request,
 			HttpServletResponse response) {
-		User user = new User();
+		String firstName = request.getParameter("firstName");
+		String lastName = request.getParameter("lastName");
+		String userName = request.getParameter("userName");
+		String password = request.getParameter("password");
+		User user = new User(firstName, lastName, userName, password);
 		Session session = DBService.initDBSession();
 		session.beginTransaction();
 		session.save(user);
 		session.getTransaction().commit();
 		request.getSession().setAttribute("user", user);
-		ModelAndView mv = new ModelAndView("forward:/user/profile");
+		ModelAndView mv = new ModelAndView("forward:/springMVC/user/profile");
 		return mv;
 	}
 	
@@ -48,7 +58,7 @@ public class UserController {
 	public ModelAndView getProfile(HttpServletRequest request,
 			HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
-		ModelAndView enrollmentview = new ModelAndView("profile");
-		return enrollmentview;
+		ModelAndView profileView = new ModelAndView("profile");
+		return profileView;
 	}
 }
