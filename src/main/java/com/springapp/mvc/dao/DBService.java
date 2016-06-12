@@ -10,7 +10,7 @@ public class DBService {
 	public static Session initDBSession() {
 		try {
 			factory = new Configuration()
-            .configure("/springWithHibernate/src/main/resources/hibernate-config.xml") 
+            .configure("hibernate-config.xml") 
             // configures settings from hibernate.cfg.xml
             .buildSessionFactory();
 			
